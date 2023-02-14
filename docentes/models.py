@@ -14,7 +14,7 @@ class Docente(models.Model):
     )
     nome = models.CharField(max_length=255, null=False)
     email = models.EmailField(max_length=255, unique=True)
-    cursos = models.ManyToManyField(Curso, null=True, blank=True)
+    cursos = models.ManyToManyField(Curso, blank=True)
     status = models.CharField(
         max_length=32,
         choices=STATUS_CHOICE,
