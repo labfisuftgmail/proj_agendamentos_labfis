@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-syaahi7h$r-foi4dn58v-gt0-k1x942yyy7!fxt^$ny#e$bh&8
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['labfisuftgmail.pythonanywhere.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'labfisuftgmail.pythonanywhere.com']
 
 
 # Application definition
