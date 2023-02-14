@@ -1,7 +1,172 @@
 {% extends '../base.html' %}
 
+{% load bootstrap %}
+
 {% block title %}LABFIS Agendamentos{% endblock %}
 
 {% block content %}
 <h1>Docentes</h1>
+
+<!-- Button trigger modal -->
+<div class="text-end mt-4 mb-3">
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addDocenteModal">
+        Adicionar Docente
+    </button>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="addDocenteModal" tabindex="-1" aria-labelledby="addDocenteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="addDocenteModalLabel">Adicionar Docente</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="post">
+                    {% csrf_token %}
+                    {{ docente_form|bootstrap }}
+                    <input type="submit" class="btn btn-success mt-2" value="Salvar">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<table class="table table-hover table-striped table-responsive-sm">
+    <thead class="table-dark">
+        <th>Nome</th>
+        <th>E-mail</th>
+        <th>Cursos</th>
+        <th>Status</th>
+        <th class="text-center">Ações</th>
+    </thead>
+    <tbody>
+        {% for docente in docentes %}
+        <tr>
+            <td>{{ docente.nome }}</td>
+            <td>{{ docente.email }}</td>
+            <td>
+                {% for curso in docente.cursos.iterator %}
+                {{ curso.nome }}
+                {% endfor %}
+            </td>
+            <td>{{ docente.status }}</td>
+            <td class="text-center">
+                <a href="{% url 'docentes:update_view' obj='docente' id=docente.id %}"
+                    class="btn btn-primary btn-sm mt-1" title="Editar">
+                    <i class="bi bi-pencil-square"></i>
+                </a>
+                <button class="btn btn-danger btn-sm mt-1" data-bs-toggle="modal" data-bs-target="#delDocenteModal-{{ docente.id }}" title="Excluir">
+                    <i class="bi bi-trash"></i>
+                </button>
+
+                <!-- Modal -->
+                <div class="modal fade" id="delDocenteModal-{{ docente.id }}" tabindex="-1" aria-labelledby="delDocenteModalLabel-{{ docente.id }}"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="delDocenteModalLabel-{{ curso.id }}">Excluir Docente</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                Deseja realmente excluir o docente <strong>{{ docente.nome }}</strong>?
+                            </div>
+                            <div class="modal-footer">
+                                <a href="{% url 'docentes:delete_view' obj='docente' id=docente.id %}" class="btn btn-danger">Excluir</a>
+                                <button type="button" class="btn btn-secondary"
+                                    data-bs-dismiss="modal">Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+<h2 class="mt-5">Cursos</h2>
+
+<!-- Button trigger modal -->
+<div class="text-end mt-4 mb-3">
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCursoModal">
+        Adicionar Curso
+    </button>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="addCursoModal" tabindex="-1" aria-labelledby="addCursoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="addCursoModalLabel">Adicionar Curso</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="post">
+                    {% csrf_token %}
+                    {{ curso_form|bootstrap }}
+                    <input type="submit" class="btn btn-success mt-2" value="Salvar">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<table class="table table-hover table-striped table-responsive-sm">
+    <thead class="table-dark">
+        <th>Nome</th>
+        <th class="text-center">Ações</th>
+    </thead>
+    <tbody>
+        {% for curso in cursos %}
+        <tr>
+            <td>{{ curso.nome }}</td>
+            <td class="text-center">
+                <a href="{% url 'docentes:update_view' obj='curso' id=curso.id %}" class="btn btn-primary btn-sm mt-1"
+                    title="Editar">
+                    <i class="bi bi-pencil-square"></i>
+                </a>
+                <button class="btn btn-danger btn-sm mt-1" data-bs-toggle="modal" data-bs-target="#delCursoModal-{{ curso.id }}" title="Excluir">
+                    <i class="bi bi-trash"></i>
+                </button>
+
+                <!-- Modal -->
+                <div class="modal fade" id="delCursoModal-{{ curso.id }}" tabindex="-1" aria-labelledby="delCursoModalLabel-{{ curso.id }}"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="delCursoModalLabel-{{ curso.id }}">Excluir Curso</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                Deseja realmente excluir o curso <strong>{{ curso.nome }}</strong>?
+                            </div>
+                            <div class="modal-footer">
+                                <a href="{% url 'docentes:delete_view' obj='curso' id=curso.id %}" class="btn btn-danger">Excluir</a>
+                                <button type="button" class="btn btn-secondary"
+                                    data-bs-dismiss="modal">Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 {% endblock %}
